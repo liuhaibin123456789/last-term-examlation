@@ -1,0 +1,23 @@
+app:
+  name: "last-term"
+  mode: "dev"
+  port: ":8085"
+  start_time: "2022-06-10"
+  machine_id: 1
+log:
+  level: "debug"
+  filename: "web_app.log"
+  max_size: 200
+  max_age: 30
+  max_backups: 7
+mysql:
+  user: "root"
+  password: "123456"
+  host: "localhost"
+  port: "3306"
+  dbname: "last-term"
+redis:
+  host: "127.0.0.1"
+  password: ""
+  port: "6379"
+  db: 0

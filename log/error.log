@@ -1,0 +1,16 @@
+2022-06-10T20:40:11.899+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	协议升级失败失败: %swebsocket: the client is not using the websocket protocol: 'upgrade' token not found in 'Connection' header
+2022-06-10T20:40:44.695+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	协议升级失败失败: %swebsocket: application specific 'Sec-WebSocket-Extensions' headers are unsupported
+2022-06-10T20:41:12.102+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	协议升级失败失败: %swebsocket: application specific 'Sec-WebSocket-Extensions' headers are unsupported
+2022-06-10T20:41:26.116+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	协议升级失败失败: %swebsocket: application specific 'Sec-WebSocket-Extensions' headers are unsupported
+2022-06-10T20:43:32.457+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	协议升级失败失败: %swebsocket: application specific 'Sec-WebSocket-Extensions' headers are unsupported
+2022-06-10T21:25:52.990+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	解析失败: strconv.ParseInt: parsing "": invalid syntax
+2022-06-10T21:26:27.460+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	解析失败: strconv.ParseInt: parsing "": invalid syntax
+2022-06-10T21:27:08.764+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	解析失败: strconv.ParseInt: parsing "": invalid syntax
+2022-06-10T21:28:07.775+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	解析失败: strconv.ParseInt: parsing "": invalid syntax
+2022-06-10T21:28:49.365+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	解析失败: strconv.ParseInt: parsing "": invalid syntax
+2022-06-10T21:28:54.934+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	解析失败: strconv.ParseInt: parsing "": invalid syntax
+2022-06-10T21:37:33.880+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	解析失败: strconv.ParseInt: parsing "": invalid syntax
+2022-06-10T22:06:00.500+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	参数错误
+2022-06-10T22:06:49.886+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	参数错误
+2022-06-10T22:29:10.600+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	解析失败: strconv.ParseInt: parsing "": invalid syntax
+2022-06-10T22:29:12.876+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	解析失败: strconv.ParseInt: parsing "": invalid syntax
