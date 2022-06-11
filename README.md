@@ -1,4 +1,5 @@
 # last-term-examlation
+
 网校第二学期考核
 
 # api
@@ -21,11 +22,11 @@
 
 ## 一、用户登录
 
-| 返回参数               | 说明                                                  |
-| ---------------------- | ----------------------------------------------------- |
-| code                 | 状态码                                                |
-| msg                   | status为1时，error为空字符串；0时，返回服务端报错信息 |
-| data | 会自定义标识某项资源，详情如以下api                   |
+| 返回参数 | 说明                                                  |
+| -------- | ----------------------------------------------------- |
+| code     | 状态码                                                |
+| msg      | status为1时，error为空字符串；0时，返回服务端报错信息 |
+| data     | 会自定义标识某项资源，详情如以下api                   |
 
 ### 1. 注册api
 
@@ -38,27 +39,28 @@ localhost:8085/user/register
 
 - 请求参数
 
-| 请求参数  | 类型`Content-Type`          | 说明                                    |
-| --------- | --------------------------- | --------------------------------------- |
-| user_name | `multipart/form-data`，可选 | 昵称，格式要求英文大小写字母数字8到16位 |
-| password  | `multipart/form-data`，必选 | 密码，格式要求英文大小写字母数字8到16位 |
-| phone     | `multipart/form-data`，必选 | 手机号作为登录账号，格式要求11位数字    |
-| answer    | `multipart/form-data`，可选 | 忘记密码时，需要的问题                  |
-| question  | `multipart/form-data`，可选 | 忘记密码时，问题对应的答案              |
+| 请求参数 | 类型`Content-Type`                  | 说明                                    |
+| -------- | ----------------------------------- | --------------------------------------- |
+| password | `multipart/form-data`or`json`，必选 | 密码，格式要求英文大小写字母数字8到16位 |
+| phone    | `multipart/form-data`or`json`，必选 | 手机号作为登录账号，格式要求11位数字    |
 
 - 其他返回参数
 
-| 其他返回参数 | 说明                                                      |
-| ------------ | --------------------------------------------------------- |
-| token        | 请求成功返回token字符串，12小时过期；请求失败返回空字符串 |
+| 其他返回参数  | 说明                                                      |
+| ------------- | --------------------------------------------------------- |
+| access_token  | 请求成功返回token字符串，12小时过期；请求失败返回空字符串 |
+| refresh_token | 刷新token,30天                                            |
 
 - 返回实例
 
   ```json
   {
-      "error": "",
-      "status": "1",
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjEyMzQ1Njc4OTAxIiwiZXhwIjoxNjQ1MDYxNzY4LCJpYXQiOjE2NDUwMTg1NjgsImlzcyI6ImNvbGQgYmluIFx1MDAyNiB0YW8gcnVpIn0.tz6R3mjK9pwOM_4_WmRX51JrUSOkObBvy_rHmfDA3_k"
+      "code": 1000,
+      "msg": "请求成功",
+      "data": {
+          "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTc1Njc3MjQsImlzcyI6ImNvbGQgYmluIn0.Qjq2fr7IliFhuJ-_NPmeZ7OhpW9pMuGYKOXWyJ-1DHE",
+          "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiODU5Njg1ODEyOTYxMjgiLCJleHAiOjE2NTUwMTE3MjQsImlhdCI6MTY1NDk3NTcyNCwiaXNzIjoiY29sZCBiaW4ifQ.Nbza57CEn1NF_GW5msDKmmPj7-hcqTf5fNHP4hQp280"
+      }
   }
   ```
 
@@ -122,7 +124,7 @@ websocket连接
 - 访问方法
 
 ```http
-localhost:8085/room/search
+GET localhost:8085/room/search
 ```
 
 - 请求参数
@@ -151,3 +153,6 @@ localhost:8085/room/search
 | message  | 第一次连接上，需要发送一次”已准备“，不能多发；等待两个客户端都发送已准备时，两个客户端可以进行通信。通信时，发送的消息格式变化如下：`{"qi_zi":11,"from_x":1,"from_y":0,"to_x":1,"to_y":0}` | webocket发送的消息 |
 
 - 其他返回参数
+
+**使用方法：连接websocket前，先注册获取access_token，然后再创建房间，然后再加入房间。第一个发送的消息是【已准备】，都准备之后，再发送棋子移动消息的json格式数据。由于棋盘看不到，推荐直接拉去本项目，本地运行，终端可以看到地图。本项目支持修改配置文件（config文件夹下）**
+
