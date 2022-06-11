@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gorilla/websocket"
 	"last-homework/dao/mysql"
 	"last-homework/model"
@@ -60,8 +59,6 @@ func Search(phone string) (roomId int64, err error) {
 	if err != nil {
 		return -1, err
 	}
-	fmt.Println("search: ", err)
 	roomId, err = mysql.SelectRoom(user.UserId)
-	fmt.Println("search: ", err)
 	return
 }
