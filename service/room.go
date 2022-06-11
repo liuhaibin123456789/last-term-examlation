@@ -19,6 +19,8 @@ func CreateRoom(userId int64, conn *websocket.Conn) {
 	go client.Read(room)
 	go client.Write()
 
+	//准备函数: 由管理端接收客户端消息
+	room.PreparedClient <- client
 	return
 }
 
@@ -34,6 +36,7 @@ func EnterRoom(userId, roomId int64, conn *websocket.Conn) {
 		conn.Close()
 		return
 	}
+	//表示房间满员
 	room.NotPreparedClient <- client
 	go client.Read(room)
 	go client.Write()

@@ -69,5 +69,6 @@ func URL() {
 		room.GET("/enter", api.EnterRoom)
 	}
 
+	//fmt.Println(model.NewChessboardAbscissa())
 	r.Run(tool.GetViper().GetString("app.port"))
 }

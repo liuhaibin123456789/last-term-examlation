@@ -7,12 +7,15 @@ import (
 	"time"
 )
 
+//下棋时广播的消息格式：棋子编号+初始坐标+移动后的坐标--》传入固定格式json数据，方便解析{"qi_zi":"棋子编号","from_coordinate":"0 0","to_coordinate":"1 0"}
+
 type Client struct {
-	Id       int64           `json:"id"`
-	UserName string          `json:"userName"`
-	Sex      int8            `json:"sex"`
-	Message  chan []byte     `json:"message"`
-	Conn     *websocket.Conn `json:"-"`
+	Id       int64               `json:"id"`
+	UserName string              `json:"userName"`
+	Sex      int8                `json:"sex"`
+	Message  chan []byte         `json:"message"`
+	CA       *ChessboardAbscissa `json:"ca"` //客户端维持一个棋局
+	Conn     *websocket.Conn     `json:"-"`
 }
 
 func NewClient(user *User, conn *websocket.Conn) *Client {
@@ -22,6 +25,7 @@ func NewClient(user *User, conn *websocket.Conn) *Client {
 		Sex:      user.Gender,
 		Message:  make(chan []byte),
 		Conn:     conn,
+		CA:       NewChessboardAbscissa(),
 	}
 }
 
@@ -74,7 +78,14 @@ func (c *Client) Read(r *Room) {
 			return
 		}
 		fmt.Println("read: ", string(message))
-		r.Broadcast <- message
-		r.SenderClient = c //广播消息的发送者
+		//todo bug 根据消息内容判别是广播还是发给管理端的准备信息.
+		if string(message) == "已准备" && r.Status != 2 {
+			if r.Status < 3 {
+				r.Status++
+			}
+		} else if r.Status == 2 {
+			r.Broadcast <- message
+			r.SenderClient = c //广播消息的发送者
+		}
 	}
 }

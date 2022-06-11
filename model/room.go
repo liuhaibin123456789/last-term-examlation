@@ -9,8 +9,8 @@ import (
 // Room 房间
 type Room struct {
 	RoomId            int64
-	Maxsize           int      //最多两人
-	Status            chan int //房间的状态：1表示房间有一个人，表示创建成功，2表示房间有两个人在用，3表示房间已经废弃
+	Maxsize           int //最多两人
+	Status            int //房间的状态：1表示房间有一个人，表示创建成功，2表示房间有两个人在用，3表示房间已经废弃
 	Clients           map[*Client]bool
 	PreparedClient    chan *Client  //准备好的房间创建者，默认都未准备
 	NotPreparedClient chan *Client  //未准备好的房间创建者
@@ -26,7 +26,7 @@ func NewRoom(maxSize int, roomId int64, user *User, conn *websocket.Conn) (*Room
 	room := &Room{
 		RoomId:            roomId,
 		Maxsize:           maxSize,
-		Status:            make(chan int),
+		Status:            1,
 		Clients:           make(map[*Client]bool, maxSize),
 		NotPreparedClient: make(chan *Client),
 		PreparedClient:    make(chan *Client),
@@ -44,7 +44,6 @@ func NewRoom(maxSize int, roomId int64, user *User, conn *websocket.Conn) (*Room
 func (r *Room) Start() {
 	defer func() {
 		fmt.Println("关闭房间...")
-		close(r.Status)
 		close(r.Broadcast)
 		close(r.NotPreparedClient)
 		close(r.PreparedClient)
@@ -54,13 +53,15 @@ func (r *Room) Start() {
 			}
 		}
 	}()
+
 	for true {
 		select {
 		case c := <-r.PreparedClient:
 			r.Clients[c] = true
+			r.SendOther([]byte("对方已准备"), c)
 		case c := <-r.NotPreparedClient:
 			r.Clients[c] = false
-			fmt.Println("NotPreparedClient 读取一个client", c)
+			r.sendMe([]byte("请准备"), c)
 		case broadcast := <-r.Broadcast:
 			r.SendOther(broadcast, r.SenderClient)
 		}
