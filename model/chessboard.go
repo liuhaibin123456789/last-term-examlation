@@ -52,7 +52,6 @@ func NewChessboardAbscissa() *ChessboardAbscissa {
 			} else {
 				ca[9-i][j] = Space
 			}
-
 		}
 	}
 	fmt.Println("初始化棋盘：", ca)
@@ -109,7 +108,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 				return false
 			}
 		}
-	case RedShuai:
+	case RedShuai: //win
 		if ca.IsRed(toX, toY) { //目标位置是红棋不可以走
 			return false
 		} else { //目标位置为黑棋或者空位，可以走，坐标都可以更新

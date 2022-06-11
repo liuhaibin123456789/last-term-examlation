@@ -86,7 +86,7 @@ func (c *Client) Read(r *Room) {
 			}
 		} else if r.Status == 2 { //都准备,才能博弈
 			var msg *Message
-			if string(message) == "已准备，开始游戏" { //准备消息
+			if string(message) == "已准备" { //准备消息
 				msg = &Message{
 					Id:     tool.GetId(),
 					RoomId: r.RoomId,
@@ -127,7 +127,6 @@ func (c *Client) Read(r *Room) {
 					r.SenderClient = c //广播消息的发送者
 				}
 			}
-
 		}
 	}
 }

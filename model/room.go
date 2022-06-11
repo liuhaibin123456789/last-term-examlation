@@ -37,7 +37,6 @@ func NewRoom(maxSize int, roomId int64, user *User, conn *websocket.Conn) (*Room
 	RManager.AddRoom(room)
 	fmt.Println("创建房间", room)
 	go room.Start() //开启房间
-
 	room.NotPreparedClient <- client
 	return room, client
 }
