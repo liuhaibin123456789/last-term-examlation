@@ -39,3 +39,16 @@ func EnterRoom(c *gin.Context) {
 	}
 	service.EnterRoom(userId, rId, conn)
 }
+
+func Search(c *gin.Context) {
+	phone := c.Query("phone")
+	roomId, err := service.Search(phone)
+	if err != nil {
+		tool.SugaredError("获取失败: ", err)
+		tool.ResponseError(c, global.CodeServerBusy)
+		return
+	}
+	tool.ResponseSuccess(c, gin.H{
+		"room_id": roomId,
+	})
+}

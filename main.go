@@ -67,8 +67,9 @@ func URL() {
 	{
 		room.GET("/create", api.CreateRoom)
 		room.GET("/enter", api.EnterRoom)
+		room.GET("/search", api.Search)
+
 	}
 
-	//fmt.Println(model.NewChessboardAbscissa())
 	r.Run(tool.GetViper().GetString("app.port"))
 }
