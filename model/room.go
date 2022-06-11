@@ -1,6 +1,7 @@
 package model
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
 	"time"
@@ -10,7 +11,7 @@ import (
 type Room struct {
 	RoomId            int64
 	Maxsize           int //最多两人
-	Status            int //房间的状态：1表示房间有一个人，表示创建成功，2表示房间有两个人在用，3表示房间已经废弃
+	Status            int //房间的状态：0表示都没有准备，1表示有一个人准备，2表示房间有两个人已准备，可以开始对局
 	Clients           map[*Client]bool
 	PreparedClient    chan *Client  //准备好的房间创建者，默认都未准备
 	NotPreparedClient chan *Client  //未准备好的房间创建者
@@ -26,7 +27,7 @@ func NewRoom(maxSize int, roomId int64, user *User, conn *websocket.Conn) (*Room
 	room := &Room{
 		RoomId:            roomId,
 		Maxsize:           maxSize,
-		Status:            1,
+		Status:            0,
 		Clients:           make(map[*Client]bool, maxSize),
 		NotPreparedClient: make(chan *Client),
 		PreparedClient:    make(chan *Client),
@@ -56,14 +57,22 @@ func (r *Room) Start() {
 
 	for true {
 		select {
-		case c := <-r.PreparedClient:
-			r.Clients[c] = true
-			r.SendOther([]byte("对方已准备"), c)
-		case c := <-r.NotPreparedClient:
+		case c := <-r.PreparedClient: //该条chan考虑客户端的退出使用
 			r.Clients[c] = false
+			r.SendOther([]byte("已退出"), c)
+		case c := <-r.NotPreparedClient:
+			r.Clients[c] = true
 			r.sendMe([]byte("请准备"), c)
 		case broadcast := <-r.Broadcast:
-			r.SendOther(broadcast, r.SenderClient)
+			//解析广播消息
+			msg := &Message{}
+			err := json.Unmarshal(broadcast, msg)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			//提取广播中的棋子路线信息进行广播
+			r.SendOther(msg.Way, r.SenderClient)
 		}
 	}
 }

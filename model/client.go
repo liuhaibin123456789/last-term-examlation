@@ -1,13 +1,14 @@
 package model
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
+	"last-homework/tool"
 	"log"
 	"time"
 )
-
-//下棋时广播的消息格式：棋子编号+初始坐标+移动后的坐标--》传入固定格式json数据，方便解析{"qi_zi":"棋子编号","from_coordinate":"0 0","to_coordinate":"1 0"}
 
 type Client struct {
 	Id       int64               `json:"id"`
@@ -83,9 +84,50 @@ func (c *Client) Read(r *Room) {
 			if r.Status < 3 {
 				r.Status++
 			}
-		} else if r.Status == 2 {
-			r.Broadcast <- message
-			r.SenderClient = c //广播消息的发送者
+		} else if r.Status == 2 { //都准备,才能博弈
+			var msg *Message
+			if string(message) == "已准备，开始游戏" { //准备消息
+				msg = &Message{
+					Id:     tool.GetId(),
+					RoomId: r.RoomId,
+					UserId: c.Id,
+					Info:   string(message),
+				}
+			} else { //已准备，可以下棋
+				//组装message
+				msg = &Message{
+					Id:     tool.GetId(),
+					RoomId: r.RoomId,
+					UserId: c.Id,
+					Way:    message, //客户端之间传递的是棋子信息
+				}
+
+				//解析message的way,操作自己的棋盘
+				chess := &PlaceChess{}
+				err := json.Unmarshal(message, chess)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+				chessRule := c.CA.ChessRule(chess.QiZi, chess.FromY, chess.FromX, chess.ToY, chess.ToX)
+
+				//操作自己的棋盘
+				if !chessRule {
+					//棋子走错，重新重新走
+					r.sendMe([]byte("路线错误，请重新发送走棋的路线！"), c)
+				} else { //棋子路线正确，广播给另一个客户端
+					bytes1, err := json.Marshal(msg)
+					if err != nil {
+						log.Println(err)
+						return
+					}
+					//去除json数据空格和下划线
+					bytes1 = bytes.TrimSpace(bytes.Replace(bytes1, []byte("\n"), []byte(" "), -1))
+					r.Broadcast <- bytes1
+					r.SenderClient = c //广播消息的发送者
+				}
+			}
+
 		}
 	}
 }
