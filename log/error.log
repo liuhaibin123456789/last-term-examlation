@@ -31,3 +31,5 @@
 2022-06-12T07:02:58.087+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	获取失败: sql: Scan called without calling Next
 2022-06-12T07:04:49.680+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	获取失败: sql: Scan called without calling Next
 2022-06-12T07:07:01.978+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	获取失败: sql: expected 2 destination arguments in Scan, not 1
+2022-06-12T11:36:55.577+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	read tcp 127.0.0.1:8085->127.0.0.1:61293: i/o timeout
+2022-06-12T11:36:55.577+0800	[31mERROR[0m	D:/Go Code/last-homework/tool/zap.go:90	write tcp 127.0.0.1:8085->127.0.0.1:61293: use of closed network connection

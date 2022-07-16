@@ -2,39 +2,14 @@ package model
 
 import (
 	"fmt"
+	"last-homework/global"
 	"last-homework/tool"
 	"math"
 )
 
-//对应棋子
-const (
-	Space = iota
-
-	RedChe
-	RedMa
-	RedXiang
-	RedSHi
-	RedShuai
-	RedPao
-	RedBing
-
-	BlackChe = 3 + iota
-	BlackMa
-	BlackXiang
-	BlackSHi
-	BlackShuai
-	BlackPao
-	BlackBing
-)
-
-const (
-	RedWinner   = 0 //红方赢了
-	BlackWinner = 1 //黑方赢了
-)
-
 var MapResult = map[int]string{
-	RedWinner:   "红棋赢了",
-	BlackWinner: "黑棋赢了",
+	global.RedWinner:   "红棋赢了",
+	global.BlackWinner: "黑棋赢了",
 }
 
 func GetResult(who int) string {
@@ -53,11 +28,11 @@ func NewChessboardAbscissa() *ChessboardAbscissa {
 	ca := new(ChessboardAbscissa)
 	//初始化棋局
 	arr := [10][9]int{
-		{BlackChe, BlackMa, BlackXiang, BlackSHi, BlackShuai, BlackSHi, BlackXiang, BlackMa, BlackChe},
-		{Space, Space, Space, Space, Space, Space, Space, Space, Space},
-		{Space, BlackPao, Space, Space, Space, Space, Space, BlackPao, Space},
-		{BlackBing, Space, BlackBing, Space, BlackBing, Space, BlackBing, Space, BlackBing},
-		{Space, Space, Space, Space, Space, Space, Space, Space, Space},
+		{global.BlackChe, global.BlackMa, global.BlackXiang, global.BlackSHi, global.BlackShuai, global.BlackSHi, global.BlackXiang, global.BlackMa, global.BlackChe},
+		{global.Space, global.Space, global.Space, global.Space, global.Space, global.Space, global.Space, global.Space, global.Space},
+		{global.Space, global.BlackPao, global.Space, global.Space, global.Space, global.Space, global.Space, global.BlackPao, global.Space},
+		{global.BlackBing, global.Space, global.BlackBing, global.Space, global.BlackBing, global.Space, global.BlackBing, global.Space, global.BlackBing},
+		{global.Space, global.Space, global.Space, global.Space, global.Space, global.Space, global.Space, global.Space, global.Space},
 		{},
 		{},
 		{},
@@ -67,10 +42,10 @@ func NewChessboardAbscissa() *ChessboardAbscissa {
 	//棋盘对称，相同棋子不同颜色差值为10
 	for i := 0; i < 5; i++ {
 		for j := 0; j < 9; j++ {
-			if arr[i][j] != Space {
+			if arr[i][j] != global.Space {
 				arr[9-i][j] = arr[i][j] - 10
 			} else {
-				arr[9-i][j] = Space
+				arr[9-i][j] = global.Space
 			}
 		}
 	}
@@ -83,27 +58,27 @@ func NewChessboardAbscissa() *ChessboardAbscissa {
 
 // IsRed 是否是红棋
 func (ca *ChessboardAbscissa) IsRed(x, y int) bool {
-	return ca.Array[x][y] <= RedBing && ca.Array[x][y] >= RedChe
+	return ca.Array[x][y] <= global.RedBing && ca.Array[x][y] >= global.RedChe
 }
 
 //IsBlack 是否是黑棋
 func (ca *ChessboardAbscissa) IsBlack(x, y int) bool {
-	return ca.Array[x][y] <= BlackBing && ca.Array[x][y] >= BlackChe
+	return ca.Array[x][y] <= global.BlackBing && ca.Array[x][y] >= global.BlackChe
 }
 
 //IsSpace 是否是空位无子
 func (ca *ChessboardAbscissa) IsSpace(x, y int) bool {
-	return ca.Array[x][y] == Space
+	return ca.Array[x][y] == global.Space
 }
 
 //IsRedShuai 是否是红方帅
 func (ca *ChessboardAbscissa) IsRedShuai(x, y int) bool {
-	return ca.Array[x][y] == RedShuai
+	return ca.Array[x][y] == global.RedShuai
 }
 
 //IsBlackShuai 是不是黑方帅
 func (ca *ChessboardAbscissa) IsBlackShuai(x, y int) bool {
-	return ca.Array[x][y] == BlackShuai
+	return ca.Array[x][y] == global.BlackShuai
 }
 
 //ContainBlackShuai 某一列是否含有黑帅
@@ -112,7 +87,7 @@ func (ca *ChessboardAbscissa) ContainBlackShuai(y int) (toX int, toY int, res bo
 		return -1, -1, false
 	}
 	for i := 0; i < 3; i++ {
-		if ca.Array[i][y] == BlackShuai {
+		if ca.Array[i][y] == global.BlackShuai {
 			return i, y, true
 		}
 	}
@@ -125,7 +100,7 @@ func (ca *ChessboardAbscissa) ContainRedShuai(y int) (toX int, toY int, res bool
 		return -1, -1, false
 	}
 	for i := 7; i < 10; i++ {
-		if ca.Array[i][y] == RedShuai {
+		if ca.Array[i][y] == global.RedShuai {
 			return i, y, true
 		}
 	}
@@ -145,36 +120,36 @@ func (ca *ChessboardAbscissa) PrintChessboard() {
 //ToString 将棋子编号转化为棋子名字
 func (ca *ChessboardAbscissa) ToString(whichChess int) string {
 	switch whichChess {
-	case RedShuai:
+	case global.RedShuai:
 		return "红帅"
-	case RedSHi:
+	case global.RedSHi:
 		return "红士"
-	case RedXiang:
+	case global.RedXiang:
 		return "红相"
-	case RedMa:
+	case global.RedMa:
 		return "红马"
-	case RedChe:
+	case global.RedChe:
 		return "红车"
-	case RedPao:
+	case global.RedPao:
 		return "红炮"
-	case RedBing:
+	case global.RedBing:
 		return "红兵"
 
-	case BlackShuai:
+	case global.BlackShuai:
 		return "黑帅"
-	case BlackSHi:
+	case global.BlackSHi:
 		return "黑士"
-	case BlackXiang:
+	case global.BlackXiang:
 		return "黑相"
-	case BlackMa:
+	case global.BlackMa:
 		return "黑马"
-	case BlackChe:
+	case global.BlackChe:
 		return "黑车"
-	case BlackPao:
+	case global.BlackPao:
 		return "黑炮"
-	case BlackBing:
+	case global.BlackBing:
 		return "黑兵"
-	case Space:
+	case global.Space:
 		return " "
 	default:
 		return "错误的棋子"
@@ -186,12 +161,12 @@ func (ca *ChessboardAbscissa) DropChess(fromX, fromY, toX, toY int) {
 	ca.Regret = ca.Array[toX][toY] //暂存棋子
 
 	ca.Array[toX][toY] = ca.Array[fromX][fromY]
-	ca.Array[fromX][fromY] = Space
+	ca.Array[fromX][fromY] = global.Space
 
 	if ca.IsBlackShuai(toX, toY) { //如果吃掉了黑帅，红方赢了
-		ca.Winner <- RedWinner
+		ca.Winner <- global.RedWinner
 	} else if ca.IsRedShuai(toX, toY) { //如果吃掉了红帅，黑方赢了
-		ca.Winner <- BlackWinner
+		ca.Winner <- global.BlackWinner
 	}
 }
 
@@ -209,7 +184,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 	yDifference := int(math.Abs(float64(toY - fromY)))
 	switch whichChess {
 
-	case BlackShuai: //todo 将帅不能在同一列
+	case global.BlackShuai: //todo 将帅不能在同一列
 		if ca.IsBlack(toX, toY) { //目标位置为自己的棋子不能走
 			return false
 		} else { //吃子或占空位
@@ -244,7 +219,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 			}
 		}
 
-	case RedShuai:
+	case global.RedShuai:
 		if ca.IsRed(toX, toY) { //目标位置是红棋不可以走
 			return false
 		} else { //目标位置为黑棋或者空位，可以走，坐标都可以更新
@@ -278,7 +253,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 				return false
 			}
 		}
-	case BlackSHi:
+	case global.BlackSHi:
 		if ca.IsBlack(toX, toY) {
 			return false
 		} else {
@@ -293,7 +268,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 			}
 		}
 
-	case RedSHi:
+	case global.RedSHi:
 		if ca.IsRed(toX, toY) {
 			return false
 		} else {
@@ -307,7 +282,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 				return false
 			}
 		}
-	case BlackXiang:
+	case global.BlackXiang:
 		if ca.IsBlack(toX, toY) {
 			return false
 		} else {
@@ -327,7 +302,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 				return false
 			}
 		}
-	case RedXiang:
+	case global.RedXiang:
 		if ca.IsRed(toX, toY) {
 			return false
 		} else {
@@ -347,7 +322,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 			}
 		}
 
-	case BlackMa:
+	case global.BlackMa:
 		if ca.IsBlack(toX, toY) {
 			return false
 		} else {
@@ -382,7 +357,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 			}
 		}
 
-	case RedMa:
+	case global.RedMa:
 		if ca.IsRed(toX, toY) {
 			return false
 		} else {
@@ -415,7 +390,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 			}
 			return false
 		}
-	case BlackChe:
+	case global.BlackChe:
 		if ca.IsBlack(toX, toY) {
 			return false
 		} else {
@@ -453,7 +428,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 				}
 			}
 		}
-	case RedChe:
+	case global.RedChe:
 		if ca.IsRed(toX, toY) {
 			return false
 		} else {
@@ -492,7 +467,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 			}
 		}
 
-	case BlackPao:
+	case global.BlackPao:
 		if ca.IsBlack(toX, toY) {
 			return false
 		} else if ca.IsSpace(toX, toY) { //目标位置为空,同车
@@ -575,7 +550,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 			}
 		}
 		return false
-	case RedPao:
+	case global.RedPao:
 		if ca.IsRed(toX, toY) {
 			return false
 		} else if ca.IsSpace(toX, toY) { //目标位置为空
@@ -656,7 +631,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 			}
 		}
 		return false
-	case BlackBing:
+	case global.BlackBing:
 		if ca.IsBlack(toX, toY) {
 			return false
 		} else {
@@ -675,7 +650,7 @@ func (ca *ChessboardAbscissa) ChessRule(whichChess, fromY, fromX, toY, toX int) 
 			}
 			return false
 		}
-	case RedBing:
+	case global.RedBing:
 		if ca.IsRed(toX, toY) {
 			return false
 		} else {

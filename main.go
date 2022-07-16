@@ -1,41 +1,41 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"last-homework/api"
 	"last-homework/dao/mysql"
 	"last-homework/middleware"
 	"last-homework/tool"
+	"log"
 )
 
 func main() {
 	//加载配置
 	if err := tool.Viper(); err != nil {
-		fmt.Println("viper出错:", err)
+		log.Fatal("viper出错:", err)
 		return
 	}
 	//初始化日志
 	if err := tool.Logger(); err != nil {
-		fmt.Println("zap出错:", err)
+		log.Fatal("zap出错:", err)
 		return
 	}
 	tool.SugaredDebug("zap logger初始化...")
 
 	if err := mysql.Mysql(); err != nil {
-		tool.SugaredPanicf("mysql init error: %s", err.Error())
+		tool.SugaredFatalf("mysql init error: %s", err.Error())
 		return
 	}
 	tool.SugaredDebug("mysql 初始化...")
 
 	if err := tool.Redis(); err != nil {
-		tool.SugaredPanicf("redis init error: %s", err.Error())
+		tool.SugaredFatalf("redis init error: %s", err.Error())
 		return
 	}
 	tool.SugaredDebug("redis 初始化...")
 
 	if err := tool.InitSnowflake(); err != nil {
-		tool.SugaredPanicf("snowflake init error: %s", err.Error())
+		tool.SugaredFatalf("snowflake init error: %s", err.Error())
 		return
 	}
 	tool.SugaredDebug("snowflake 初始化...")

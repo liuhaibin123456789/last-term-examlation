@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
+	"last-homework/global"
 	"last-homework/tool"
 	"time"
 )
@@ -104,10 +105,10 @@ func (c *Client) Read(r *Room) {
 		//都准备,才能博弈
 
 		//赢了，关闭广播
-		if string(message) == MapResult[RedWinner] {
-			r.Winner <- RedWinner
-		} else if string(message) == MapResult[BlackWinner] {
-			r.Winner <- BlackWinner
+		if string(message) == MapResult[global.RedWinner] {
+			r.Winner <- global.RedWinner
+		} else if string(message) == MapResult[global.BlackWinner] {
+			r.Winner <- global.BlackWinner
 		} else if string(message) == Prepared {
 			//组装message
 			msg = &Message{
