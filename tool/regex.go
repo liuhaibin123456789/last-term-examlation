@@ -9,6 +9,11 @@ func RegexPassword(password string) bool {
 	if err != nil {
 		panic(err)
 	}
+
+	if len(password) > 16 {
+		return false
+	}
+
 	return c.MatchString(password)
 }
 
@@ -18,6 +23,9 @@ func RegexPhone(phone string) bool {
 	res, err := regexp.MatchString(regex, phone)
 	if err != nil {
 		panic(err)
+	}
+	if len(phone) > 11 {
+		return false
 	}
 	return res
 }
