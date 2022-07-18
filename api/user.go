@@ -15,7 +15,7 @@ func Register(c *gin.Context) {
 	err := c.ShouldBind(user)
 	if err != nil {
 		//日志记录
-		tool.SugaredWarn("注册api参数有误", err)
+		//tool.SugaredWarn("注册api参数有误", err)
 		tool.ResponseError(c, global.CodeShouldBindError)
 		return
 	}
@@ -26,11 +26,11 @@ func Register(c *gin.Context) {
 	aToken, rToken, err := service.Register(u)
 	if err != nil {
 		//日志记录
-		tool.SugaredError("service.Register(user)", err)
+		//tool.SugaredError("service.Register(user)", err)
 		tool.ResponseError(c, global.CodeFailedRegister)
 		return
 	}
-	tool.SugaredInfof("注册用户成功. 手机号：%s,user_id:，%s", user.Phone, u.UserId)
+	//tool.SugaredInfof("注册用户成功. 手机号：%s,user_id:，%s", user.Phone, u.UserId)
 	tool.ResponseSuccess(c, ResRegister{
 		RefreshToken: rToken,
 		AccessToken:  aToken,

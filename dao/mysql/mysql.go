@@ -20,7 +20,6 @@ func Mysql() (err error) {
 	dsn := user + ":" + pwd + "@tcp(" + h + ":" + p + ")/" + db + "?charset=utf8mb4&parseTime=True&loc=Local"
 	gdb, err := gorm.Open(mysql.Open(dsn), &gorm.Config{SkipDefaultTransaction: true})
 	if err != nil {
-
 		return err
 	}
 	GDB = gdb
